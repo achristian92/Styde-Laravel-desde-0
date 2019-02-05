@@ -14,3 +14,21 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/usuarios',function (){
+   return 'Usuarios';
+});
+
+Route::get('/usuarios/nuevo',function (){
+   return 'Crear nuevo Usuario';
+});
+Route::get('/usuarios/{id}',function ($id){
+   return "Detalle del usuario {$id}";
+});
+Route::get('/saludo/{usuario}/{nickname?}',function ($usuario,$nickname = null){
+   if($nickname != null){
+       return "Hola {$usuario} , tu apodo es {$nickname}";
+   }else{
+       return "Hola {$usuario} , no tienes apodo";
+   }
+});
