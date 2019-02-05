@@ -18,17 +18,20 @@ Route::get('/', function () {
 Route::get('/usuarios',function (){
    return 'Usuarios';
 });
+Route::get('/usuarios/{id}',function ($id){
+    return "Detalle del usuario {$id}";
+})->where('id','[0-9]+');
 
 Route::get('/usuarios/nuevo',function (){
    return 'Crear nuevo Usuario';
 });
-Route::get('/usuarios/{id}',function ($id){
-   return "Detalle del usuario {$id}";
-});
+
 Route::get('/saludo/{usuario}/{nickname?}',function ($usuario,$nickname = null){
+    $name = ucfirst($usuario);
    if($nickname != null){
-       return "Hola {$usuario} , tu apodo es {$nickname}";
+       $nick = ucfirst($nickname);
+       return "Hola {$name} , tu apodo es {$nick}";
    }else{
-       return "Hola {$usuario} , no tienes apodo";
+       return "Hola {$name}";
    }
 });
