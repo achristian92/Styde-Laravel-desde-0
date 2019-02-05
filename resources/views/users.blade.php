@@ -8,12 +8,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1><?= e($title) ?></h1>
+    <h1>{{ $title }}</h1>
+    <hr>
+    @unless(empty($users)) <!--condicional inverso(a menos que la lista usuario este vacia-->
     <ul>
-        <?php foreach ($users as $user) :?>
-            <li><?= e($user) ?></li>
-        <?php endforeach; ?>
+        @foreach ($users as $user)
+            <li>{{ $user }}</li>
+        @endforeach
     </ul>
+    @else
+        <p>No hay Usuarios Registrados</p>
+    @endunless
 
 </body>
 </html>
