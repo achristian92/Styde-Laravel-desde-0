@@ -15,23 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/usuarios',function (){
-   return 'Usuarios';
-});
-Route::get('/usuarios/{id}',function ($id){
-    return "Detalle del usuario {$id}";
-})->where('id','[0-9]+');
+Route::get('/usuarios','UserController@index');
 
-Route::get('/usuarios/nuevo',function (){
-   return 'Crear nuevo Usuario';
-});
+Route::get('/usuarios/{id}','UserController@show')->where('id','[0-9]+');
 
-Route::get('/saludo/{usuario}/{nickname?}',function ($usuario,$nickname = null){
-    $name = ucfirst($usuario);
-   if($nickname != null){
-       $nick = ucfirst($nickname);
-       return "Hola {$name} , tu apodo es {$nick}";
-   }else{
-       return "Hola {$name}";
-   }
-});
+Route::get('/usuarios/nuevo','UserController@create');
+
+Route::get('/usuarios/{id}/edit','UserController@edit');
+
+Route::get('/saludo/{usuario}/{nickname?}','WelcomeUserController');
+
