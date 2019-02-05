@@ -8,7 +8,15 @@ class UserController extends Controller
 {
     public function index()
     {
-        return 'Usuarios';
+        $users = [
+          'Alan',
+          'Julio',
+          'Isabel',
+          '<script>alert("Click")</script>'
+        ];
+        $title = 'Listado de Usuarios';
+
+        return view('users',compact('users','title')); //compact convierte en un array asosiativo
     }
 
     public function show($id)
