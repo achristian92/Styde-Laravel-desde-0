@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('profession_id')->nullable();
             $table->string('password');
             $table->boolean('isAdmin')->default(false);
+            $table->string('website')->nullable();
             $table->rememberToken();
             $table->timestamps();
             //Claves foreanes
