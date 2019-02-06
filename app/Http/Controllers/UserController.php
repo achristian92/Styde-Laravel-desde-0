@@ -16,14 +16,8 @@ class UserController extends Controller
         return view('users.index',compact('users','title')); //compact convierte en un array asosiativo
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::findorFail($id);
-
-//        if($user == null) {
-//            return response()->view('errors.404',[],404);
-//        }
-
         return view('users.show',compact('user'));
 
     }
