@@ -38,6 +38,11 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->email === 'dulio@styde.net';
+        return $this->isAdmin;
+    }
+
+    public function profession() //columna profession_id si no le pasamos segundo parametros
+    {
+        return $this->belongsTo(Profession::class); //un usuario perteneze a una profession
     }
 }
