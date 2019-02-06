@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        if(request()->has('empty')){ //si la peticion contiene el campo empty
-            $users = [];
-        }else{
-            $users = [
-                'Alan',
-                'Julio',
-                'Isabel',
-                '<script>alert("Click")</script>'
-            ];
-        }
+        $users = User::all();
 
         $title = 'Listado de Usuarios';
 
