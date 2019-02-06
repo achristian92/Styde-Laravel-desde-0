@@ -21,12 +21,12 @@ class UserController extends Controller
 
         $title = 'Listado de Usuarios';
 
-        return view('users',compact('users','title')); //compact convierte en un array asosiativo
+        return view('users.index',compact('users','title')); //compact convierte en un array asosiativo
     }
 
     public function show($id)
     {
-        return "Detalle del usuario {$id}";
+        return view('users.show',compact('id'));
 
     }
 
