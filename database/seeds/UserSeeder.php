@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         $profeId = Profession::whereTitle('Backend')->value('id');
 
 
+
         User::create([
             'name' => 'Alan',
             'email' => 'cristian_15@gmail.com',
@@ -27,18 +28,13 @@ class UserSeeder extends Seeder
             'profession_id' => $profeId,
             'isAdmin' => true
         ]);
-        User::create([
-            'name' => 'Alan1',
-            'email' => 'a1@gmail.com',
-            'password' => bcrypt('laravel'),
-            'profession_id' => $profeId,
+
+        factory(User::class)->create([
+            'profession_id' => $profeId
         ]);
-        User::create([
-            'name' => 'Alan2',
-            'email' => 'a2@gmail.com',
-            'password' => bcrypt('laravel'),
-            'profession_id' => null,
-        ]);
+
+        factory(User::class,10)->create(); //10 registro aleatorios
+
 
     }
 }
