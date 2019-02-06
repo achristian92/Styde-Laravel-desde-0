@@ -1,11 +1,11 @@
 @extends('layout')
 @section('title',"Crear Usuario")
 @section('content')
-    <h1>Crear Usuario</h1>
+    <h1>Crear nuevo Usuario</h1>
 
     <form action="{{route('users.store')}}" method="post">
         {!! csrf_field()!!}
-        
+
         <button type="submit">Crear Usuario</button>
 
     </form>

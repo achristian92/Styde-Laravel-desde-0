@@ -60,10 +60,27 @@ class UsersModuleTest extends TestCase
             ->assertSee('Editar el id del usu 1');
     }
     /** @test */
-    function ir_displays_a_404_error_if_the_user_is_not_found()
+    function it_displays_a_404_error_if_the_user_is_not_found()
     {
         $this->get('/usuarios/999')
             ->assertStatus(404)
             ->assertSee('Pagina no encontrada');
+    }
+    /** @test */
+    function it_creates_a_new_user()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->post('/usuarios/store',[
+           'name' => 'Dulio',
+           'email' => 'prueba@gmail.com',
+           'password' => '123456',
+        ])->assertRedirect(route('users.index'));
+
+        $this->assertCredentials([ //verficar si el usuario se creo correctament con la contraseña
+           'name' => 'Dulio',
+           'email' => 'prueba@gmail.com',
+           'password' => '123456'
+        ]);
     }
 }
