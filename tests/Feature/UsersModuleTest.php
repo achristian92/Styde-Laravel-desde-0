@@ -59,4 +59,11 @@ class UsersModuleTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Editar el id del usu 1');
     }
+    /** @test */
+    function ir_displays_a_404_error_if_the_user_is_not_found()
+    {
+        $this->get('/usuarios/999')
+            ->assertStatus(404)
+            ->assertSee('Pagina no encontrada');
+    }
 }
