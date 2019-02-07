@@ -103,4 +103,67 @@ class UsersModuleTest extends TestCase
             'email' => 'prueba@gmail.com',
         ]);
     }
+    /** @test */
+    function the_email_is_required()
+    {
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',[
+                'name' => 'Alancin',
+                'email' => '',
+                'password' => '123456',
+            ])->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['email']);
+
+        $this->assertEquals(0,User::count());
+    }
+    /** @test */
+    function the_email_must_be_valid()
+    {
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',[
+                'name' => 'Alancin',
+                'email' => 'correo-no-valido',
+                'password' => '123456',
+            ])->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['email']);
+
+        $this->assertEquals(0,User::count());
+    }
+    /** @test */
+    function the_email_must_be_unique()
+    {
+        factory(User::class)->create([
+           'email' => 'correo_unico@gmail.com'
+        ]);
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',[
+                'name' => 'Alancin',
+                'email' => 'correo_unico@gmail.com',
+                'password' => '123456',
+            ])
+
+            ->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['email']);
+
+        $this->assertEquals(1,User::count());
+    }
+    /** @test */
+    function the_password_is_required()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',[
+                'name' => 'Alancin',
+                'email' => 'pruebin@gmail.com',
+                'password' => '',
+            ])->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['password']); //error esperado es en el campo password
+
+        $this->assertEquals(0,User::count());
+
+    }
+    
 }
