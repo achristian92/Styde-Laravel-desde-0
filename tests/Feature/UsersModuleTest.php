@@ -83,4 +83,24 @@ class UsersModuleTest extends TestCase
            'password' => '123456'
         ]);
     }
+    /** @test */
+    function the_name_is_required()
+    {
+//        $this->withoutExceptionHandling();
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',[
+            'name' => '',
+            'email' => 'prueba@gmail.com',
+            'password' => '123456',
+        ])->assertRedirect(route('users.create'))
+          ->assertSessionHasErrors(['name' => 'campo nombre es obligatorio']); //exista un mensaje para el campo name
+
+        $this->assertEquals(0,User::count());
+        // O
+        //espero que el usuario no haya sido creado ...
+        $this->assertDatabaseMissing('users',[
+            'email' => 'prueba@gmail.com',
+        ]);
+    }
 }
