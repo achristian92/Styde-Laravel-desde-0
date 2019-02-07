@@ -16,9 +16,9 @@
 
     @endif
 
-    <form action="{{route('users.store')}}" method="post">
+    <form action="{{route('users.update',$user->id)}}" method="post">
         {!! csrf_field()!!}
-
+        {{ method_field('PUT') }}
         <label for="name">Nombre :</label>
         <input type="text" name="name" id="name" value="{{old('name',$user->name)}}">
         <br>
