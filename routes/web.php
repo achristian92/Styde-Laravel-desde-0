@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('users.index'));
 });
 
 Route::get('/usuarios','UserController@index')->name('users.index');
@@ -20,10 +20,12 @@ Route::get('/usuarios','UserController@index')->name('users.index');
 Route::get('/usuarios/{user}','UserController@show')->where('user','[0-9]+')->name('users.show');
 
 Route::get('/usuarios/nuevo','UserController@create')->name('users.create');
+
 Route::post('/usuarios/store','UserController@store')->name('users.store');
 
-
 Route::get('/usuarios/{user}/edit','UserController@edit')-> name('users.edit');
+
+Route::put('/usuarios/{user}','UserController@update')->name('users.update');
 
 Route::get('/saludo/{usuario}/{nickname?}','WelcomeUserController');
 

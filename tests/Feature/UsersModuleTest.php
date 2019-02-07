@@ -179,6 +179,25 @@ class UsersModuleTest extends TestCase
             ->assertViewHas('user',function($viewUser) use ($user){
                 return $viewUser->id == $user->id;
             }) ; //verificar q mi vista tenga una variable users y que el objeto sea userr
-}
+    }
+    /** @test */
+    function it_updates_a_user()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $this->put(route('users.update',$user->id),[
+            'name' => 'Dulio',
+            'email' => 'dulio@styde.net',
+            'password' => '123456'
+            ])->assertRedirect(route('users.show',$user->id));
+
+        $this->assertCredentials([
+           'name' => 'Dulio',
+           'email' => 'dulio@styde.net',
+           'password' => '123456'
+        ]);
+    }
 
 }
