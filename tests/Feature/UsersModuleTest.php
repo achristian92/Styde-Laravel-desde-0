@@ -239,23 +239,25 @@ class UsersModuleTest extends TestCase
     /** @test */
     function the_email_must_be_unique_when_updating_the_user()
     {
-        self::markTestIncomplete();
-        return;
+        factory(User::class)->create([
+            'email' => 'existing-email@gmail.com'
+        ]);
+
         $user = factory(User::class)->create([
             'email' => 'correo_unico@gmail.com'
         ]);
 
-        $this->from("usuarios/{$user->id}/editar")
+        $this->from("usuarios/{$user->id}/edit")
             ->put("/usuarios/{$user->id}",[
                 'name' => 'Alancin',
-                'email' => 'correo_unico@gmail.com',
+                'email' => 'existing-email@gmail.com',
                 'password' => '123456',
             ])
 
-            ->assertRedirect(route('users.create'))
+            ->assertRedirect(route('users.edit',$user->id))
             ->assertSessionHasErrors(['email']);
 
-        $this->assertEquals(1,User::count());
+//        $this->assertEquals(1,User::count());
     }
 
     /** @test */
@@ -278,6 +280,26 @@ class UsersModuleTest extends TestCase
             'name' => 'Alancin',
             'email' => 'pruebin@gmail.com',
             'password' => $oldPassword
+        ]);
+    }
+    /** @test */
+    function the_users_email_can_stay_the_same_when_updating_the_user()
+    {
+
+        $user = factory(User::class)->create([
+            'email' => 'alan@gmail.com'
+        ]);
+
+        $this->from("usuarios/{$user->id}/edit")
+            ->put("/usuarios/{$user->id}",[
+                'name' => 'Alancin',
+                'email' => 'alan@gmail.com',
+                'password' => '1235678',
+            ])->assertRedirect(route('users.show',$user->id));
+
+        $this->assertDatabaseHas('users',[
+            'name' => 'Alancin',
+            'email' => 'alan@gmail.com',
         ]);
     }
 
