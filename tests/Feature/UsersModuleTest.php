@@ -55,9 +55,13 @@ class UsersModuleTest extends TestCase
     /** @test */
     function it_loadas_the_edit_users_page()
     {
-        $this->get('usuarios/1/edit')
+        //$this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $this->get("usuarios/{$user->id}/edit")
             ->assertStatus(200)
-            ->assertSee('Editar el id del usu 1');
+            ->assertSee("Editar Usuario # {$user->id}");
     }
     /** @test */
     function it_displays_a_404_error_if_the_user_is_not_found()
@@ -152,8 +156,6 @@ class UsersModuleTest extends TestCase
     /** @test */
     function the_password_is_required()
     {
-        //$this->withoutExceptionHandling();
-
         $this->from('usuarios/nuevo')
             ->post('/usuarios/store',[
                 'name' => 'Alancin',
@@ -163,7 +165,20 @@ class UsersModuleTest extends TestCase
             ->assertSessionHasErrors(['password']); //error esperado es en el campo password
 
         $this->assertEquals(0,User::count());
-
     }
-    
+
+    /** @test */
+    function it_loads_the_edit_users_page()
+    {
+        $user = factory(User::class)->create();
+
+        $this->get(route('users.edit',$user->id))
+            ->assertViewIs('users.edit') //verificar retorne una  vista edit
+            ->assertStatus(200)
+            ->assertSee('Editar Usuario #')
+            ->assertViewHas('user',function($viewUser) use ($user){
+                return $viewUser->id == $user->id;
+            }) ; //verificar q mi vista tenga una variable users y que el objeto sea userr
+}
+
 }
