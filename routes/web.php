@@ -29,3 +29,4 @@ Route::put('/usuarios/{user}','UserController@update')->name('users.update');
 
 Route::get('/saludo/{usuario}/{nickname?}','WelcomeUserController');
 
+Route::delete('usuario/{user}/delete','UserController@destroy')->name('users.destroy');
