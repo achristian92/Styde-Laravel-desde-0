@@ -1,41 +1,44 @@
 @extends('layout')
 @section('title',"Crear Usuario")
 @section('content')
-    <h1>Crear nuevo Usuario</h1>
-
-    @if($errors->any())
-        <div class="alert alert-danger">
-            <p> Hay Errores!</p>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{$error}}</li>
-                @endforeach
-            </ul>
+    <div class="card">
+        <div class="card-header">
+            <h4>Crear nuevo Usuario</h4>
         </div>
+        <div class="card-body">
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <p> Hay Errores!</p>
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                </div>
 
 
-    @endif
+            @endif
 
-    <form action="{{route('users.store')}}" method="post">
-        {!! csrf_field()!!}
 
-        <label for="name">Nombre :</label>
-        <input type="text" name="name" id="name" value="{{old('name')}}">
-        @if($errors->has('name'))
-            <p>{{$errors->first('name')}}</p>
-        @endif()
-        <br>
-        <label>Email</label>
-        <input type="email" name="email" value="{{old('email')}}">
-        <br>
-        <label>Password</label>
-        <input type="password" name="password">
-        <br>
-        <button type="submit">Crear Usuario</button>
+            <form action="{{route('users.store')}}" method="post">
+                {!! csrf_field()!!}
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">
+                </div>
+                <div class="form-group">
+                    <label for="pass">Contraseña</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
 
-    </form>
-    <p>
-        <a href="{{route('users.index')}}">Regresar</a>
-    </p>
+                <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                <a href="{{route('users.index')}}" class="btn btn-link">Regresar</a>
 
+            </form>
+        </div>
+    </div>
 @endsection
