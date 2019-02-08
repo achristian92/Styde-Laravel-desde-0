@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Profession;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UsersModuleTest extends TestCase
 {
+    protected $profession;
     use RefreshDatabase; // ejecutar las migration de bd original
 
     /** @test */
@@ -73,14 +75,15 @@ class UsersModuleTest extends TestCase
     /** @test */
     function it_creates_a_new_user()
     {
-        $this->withoutExceptionHandling();
+       // $this->withoutExceptionHandling();
 
         $this->post('/usuarios/store', $this->getValidData())->assertRedirect(route('users.index'));
 
         $this->assertCredentials([ //verficar si el usuario se creo correctament con la contraseña
            'name' => 'Dulio',
            'email' => 'prueba@gmail.com',
-           'password' => '123456'
+           'password' => '123456',
+           'profession_id' => $this->profession->id
         ]);
         $this->assertDatabaseHas('user_profiles',[
             'user_id' => User::findByEmail('prueba@gmail.com')->id,
@@ -107,6 +110,26 @@ class UsersModuleTest extends TestCase
             'user_id' => User::findByEmail('prueba@gmail.com')->id,
             'bio' => 'Biografia',
             'twitter' => null
+        ]);
+    }
+    /** @test */
+    function the_profession_id_field_is_optional()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->post('/usuarios/store',$this->getValidData([
+            'profession_id' => null
+        ]))->assertRedirect(route('users.index'));
+
+        $this->assertCredentials([ //verficar si el usuario se creo correctament con la contraseña
+            'name' => 'Dulio',
+            'email' => 'prueba@gmail.com',
+            'password' => '123456',
+            'profession_id' => null
+        ]);
+        $this->assertDatabaseHas('user_profiles',[
+            'user_id' => User::findByEmail('prueba@gmail.com')->id,
+            'bio' => 'Biografia',
         ]);
     }
 
@@ -174,7 +197,34 @@ class UsersModuleTest extends TestCase
 
         $this->assertDatabaseEmpty('users');
     }
+    /** @test */
+    function the_profession_must_be_valid()
+    {
+        $this->handleValidationExceptions();
 
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',$this->getValidData([
+                'profession_id' => '999'
+            ]))->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['profession_id']); //exista un mensaje para el campo name
+
+        $this->assertDatabaseEmpty('users');
+    }
+    /** @test */
+    function only_selectable_professions_are_valid()
+    {
+        $deleteProfession = factory(Profession::class)->create([
+            'deleted_at' => now()->format('Y-m-d')
+        ]);
+
+        $this->from('usuarios/nuevo')
+            ->post('/usuarios/store',$this->getValidData([
+                'profession_id' => $deleteProfession->id
+            ]))->assertRedirect(route('users.create'))
+            ->assertSessionHasErrors(['profession_id']); //exista un mensaje para el campo name
+
+        $this->assertDatabaseEmpty('users');
+    }
     /** @test */
     function it_loads_the_edit_users_page()
     {
@@ -327,10 +377,13 @@ class UsersModuleTest extends TestCase
 
     public function getValidData(array $custom = [])
     {
+        $this->profession= factory(Profession::class)->create();
+
         return array_filter(array_merge([
             'name' => 'Dulio',
             'email' => 'prueba@gmail.com',
             'password' => '123456',
+            'profession_id' => $this->profession->id,
             'bio' => 'Biografia',
             'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
         ],$custom));
