@@ -37,7 +37,7 @@ class CreateUserRequest extends FormRequest
     public function messages()
     {
         return [
-          'name.required' => 'El campo nombre es obligatorio'
+          'name.required' => 'campo nombre es obligatorio'
         ];
     }
     public function createUser()
@@ -51,9 +51,8 @@ class CreateUserRequest extends FormRequest
                 'password' => bcrypt($data['password'])
             ]);
             $user->profile()->create([
-                'user_id' => $user->id,
                 'bio' => $data['bio'],
-                'twitter' => $data['twitter'],
+                'twitter' => $data['twitter'] ?? null,
             ]);
         });
     }
