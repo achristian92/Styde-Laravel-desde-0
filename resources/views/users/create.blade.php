@@ -34,6 +34,14 @@
                     <label for="pass">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
+                <div class="form-group">
+                    <label for="nombre">Biografia</label>
+                    <textarea name="bio" class="form-control" id="bio">{{old('bio')}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="nombre">twitter</label>
+                    <input type="text" class="form-control" id="twitter" name="twitter" value="{{old('twitter')}}">
+                </div>
 
                 <button type="submit" class="btn btn-primary">Crear Usuario</button>
                 <a href="{{route('users.index')}}" class="btn btn-link">Regresar</a>

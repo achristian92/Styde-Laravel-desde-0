@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -31,7 +32,12 @@ class User extends Authenticatable
       'is_admin' => 'boolean' //converit de entero a bolleano
     ];
 
-    public function findByEmail($email)
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public static function findByEmail($email)
     {
         return static::where(compact($email))->first();
     }
@@ -45,4 +51,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Profession::class); //un usuario perteneze a una profession
     }
+
+
 }

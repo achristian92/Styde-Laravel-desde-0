@@ -73,18 +73,26 @@ class UsersModuleTest extends TestCase
     /** @test */
     function it_creates_a_new_user()
     {
-        //$this->withoutExceptionHandling();
+        $this->withoutExceptionHandling();
+
 
         $this->post('/usuarios/store',[
            'name' => 'Dulio',
            'email' => 'prueba@gmail.com',
            'password' => '123456',
+            'bio' => 'Biografia',
+            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
         ])->assertRedirect(route('users.index'));
 
         $this->assertCredentials([ //verficar si el usuario se creo correctament con la contraseña
            'name' => 'Dulio',
            'email' => 'prueba@gmail.com',
            'password' => '123456'
+        ]);
+        $this->assertDatabaseHas('user_profiles',[
+            'user_id' => User::findByEmail('prueba@gmail.com')->id,
+            'bio' => 'Biografia',
+            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
         ]);
     }
     /** @test */

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
 use App\User;
+use App\UserProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -29,22 +32,9 @@ class UserController extends Controller
 
     }
 
-    public function store()
+    public function store(CreateUserRequest $request)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'email'=> 'required|email|unique:users,email',
-            'password' => 'required'
-        ],[
-            'name.required' => 'campo nombre es obligatorio'
-        ]);
-
-
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
-        ]);
+        $request->createUser();
 
         return redirect()->route('users.index');
     }
