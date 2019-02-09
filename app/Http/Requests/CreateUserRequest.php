@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Profession;
 use App\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,8 @@ class CreateUserRequest extends FormRequest
             'twitter' => 'nullable|present|url',
             'profession_id' => [
                 'nullable','present', Rule::exists('professions','id')->whereNull('deleted_at')
-            ]
+            ],
+
         ];
     }
 
@@ -46,9 +48,11 @@ class CreateUserRequest extends FormRequest
     }
     public function createUser()
     {
+
         $data = $this->validated();
 
-        DB::transaction(function () use ($data){ // si algo falla a mitad de camino , no persiste en la bd
+        DB::transaction(function () use ($data){
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
