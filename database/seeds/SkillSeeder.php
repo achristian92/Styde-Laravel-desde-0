@@ -21,6 +21,15 @@ class SkillSeeder extends Seeder
         Skill::create([
             'name' => 'LARAVEL',
         ]);
+        Skill::create([
+            'name' => 'POO',
+        ]);
+        Skill::create([
+            'name' => 'VUE.JS',
+        ]);
+        Skill::create([
+            'name' => 'JQUERY',
+        ]);
 
     }
 }
