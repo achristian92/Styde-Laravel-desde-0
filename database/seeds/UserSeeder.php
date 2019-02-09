@@ -21,19 +21,23 @@ class UserSeeder extends Seeder
 
 
 
-        User::create([
+        $user = User::create([
             'name' => 'Alan',
             'email' => 'cristian_15@gmail.com',
             'password' => bcrypt('laravel'),
-            'profession_id' => $profeId,
             'isAdmin' => true
         ]);
 
-        factory(User::class)->create([
+        $user->profile()->create([
+            'bio' => 'Biografia desde seed',
             'profession_id' => $profeId
         ]);
 
-        factory(User::class,10)->create(); //10 registro aleatorios
+        factory(User::class,5)->create()->each(function ($user){
+            $user->profile()->create(
+              factory(\App\UserProfile::class)->raw()
+            );
+        });
 
 
     }

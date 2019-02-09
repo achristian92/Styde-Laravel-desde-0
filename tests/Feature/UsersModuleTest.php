@@ -50,9 +50,14 @@ class UsersModuleTest extends TestCase
     /** @test */
     function it_loads_the_new_users_page()
     {
+        $profession = factory(Profession::class)->create();
+
         $this->get('/usuarios/nuevo')
             ->assertStatus(200)
-            ->assertSee('Crear nuevo Usuario');
+            ->assertSee('Crear nuevo Usuario')
+            ->assertViewHas('professions',function($professions) use ($profession){
+                return $professions->contains($profession);
+            });
     }
     /** @test */
     function it_loadas_the_edit_users_page()
@@ -83,10 +88,10 @@ class UsersModuleTest extends TestCase
            'name' => 'Dulio',
            'email' => 'prueba@gmail.com',
            'password' => '123456',
-           'profession_id' => $this->profession->id
         ]);
         $this->assertDatabaseHas('user_profiles',[
             'user_id' => User::findByEmail('prueba@gmail.com')->id,
+            'profession_id' => $this->profession->id,
             'bio' => 'Biografia',
             'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
         ]);
@@ -95,7 +100,7 @@ class UsersModuleTest extends TestCase
     /** @test */
     function the_twitter_field_is_optional()
     {
-        $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
 
         $this->post('/usuarios/store',$this->getValidData([
             'twitter' => null
@@ -125,10 +130,10 @@ class UsersModuleTest extends TestCase
             'name' => 'Dulio',
             'email' => 'prueba@gmail.com',
             'password' => '123456',
-            'profession_id' => null
         ]);
         $this->assertDatabaseHas('user_profiles',[
             'user_id' => User::findByEmail('prueba@gmail.com')->id,
+            'profession_id' => null,
             'bio' => 'Biografia',
         ]);
     }
@@ -211,11 +216,14 @@ class UsersModuleTest extends TestCase
         $this->assertDatabaseEmpty('users');
     }
     /** @test */
-    function only_selectable_professions_are_valid()
+    function only_not_deleted_professions_can_be_selected()
     {
+
         $deleteProfession = factory(Profession::class)->create([
             'deleted_at' => now()->format('Y-m-d')
         ]);
+
+        $this->handleValidationExceptions();
 
         $this->from('usuarios/nuevo')
             ->post('/usuarios/store',$this->getValidData([
@@ -379,14 +387,14 @@ class UsersModuleTest extends TestCase
     {
         $this->profession= factory(Profession::class)->create();
 
-        return array_filter(array_merge([
+        return array_merge([
             'name' => 'Dulio',
             'email' => 'prueba@gmail.com',
             'password' => '123456',
             'profession_id' => $this->profession->id,
             'bio' => 'Biografia',
             'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
-        ],$custom));
+        ],$custom);
     }
 
 }

@@ -17,14 +17,12 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->unsignedInteger('profession_id')->nullable();
             $table->string('password');
             $table->boolean('isAdmin')->default(false);
             $table->string('website')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            //Claves foreanes
-            $table->foreign('profession_id')->references('id')->on('professions');
+
         });
     }
 
