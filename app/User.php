@@ -28,9 +28,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $casts = [
-      'is_admin' => 'boolean' //converit de entero a bolleano
-    ];
 
     public function profile()
     {
@@ -44,7 +41,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->isAdmin;
+        return $this->role === 'admin';
     }
 
     public function profession() //columna profession_id si no le pasamos segundo parametros

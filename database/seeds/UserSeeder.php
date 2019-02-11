@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             'name' => 'Alan',
             'email' => 'cristian_15@gmail.com',
             'password' => bcrypt('laravel'),
-            'isAdmin' => true
+            'role' => 'admin'
         ]);
 
         $user->profile()->create([

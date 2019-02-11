@@ -39,11 +39,11 @@
                     <textarea name="bio" class="form-control" id="bio">{{old('bio')}}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="profession">Profession</label>
+                    <label for="profession_id">Profession</label>
                     <select class="form-control" id="profession_id" name="profession_id">
                         <option value="">Seleccionar</option>
                         @foreach($professions as $profession)
-                            <option value="{{$profession->id}}"{{old('$profession_id') == $profession->id ? ' selected' : ''}}>
+                            <option value="{{$profession->id}}"{{old('profession_id') == $profession->id ? 'selected' : ''}}>
                                 {{$profession->title}}
                             </option>
                         @endforeach
@@ -66,6 +66,19 @@
                         <label class="form-check-label" for="skill_{{$skill->id}}">{{$skill->name}}</label>
                     </div>
                 @endforeach
+                <h5 class="mt-3">Rol</h5>
+                @foreach($roles as $role =>$name)
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input"
+                           type="radio" name="role"
+                           id="role_{{$role}}"
+                           value="{{$role}}"
+                           {{old('role') == $role ? 'checked' : ''}}
+                    >
+                    <label class="form-check-label" for="role_{{$role}}">{{$role}}</label>
+                </div>
+                @endforeach()
+
 
                 <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary">Crear Usuario</button>

@@ -101,6 +101,7 @@ class UsersModuleTest extends TestCase
            'name' => 'Dulio',
            'email' => 'prueba@gmail.com',
            'password' => '123456',
+           'role' => 'user'
         ]);
 
         $user = User::findByEmail('prueba@gmail.com');
@@ -144,6 +145,34 @@ class UsersModuleTest extends TestCase
             'bio' => 'Biografia',
             'twitter' => null
         ]);
+    }
+    /** @test */
+    function the_role_field_is_optional()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->post('/usuarios/store',$this->getValidData([
+            'role' => null
+        ]))->assertRedirect(route('users.index'));
+
+        $this->assertDatabaseHas('users',[ //verficar si el usuario se creo correctament con la contraseña
+            'email' => 'prueba@gmail.com',
+            'role' => 'user'
+
+        ]);
+
+    }
+    /** @test */
+    function the_role_must_be_valid()
+    {
+        //$this->withoutExceptionHandling();
+
+        $this->post('/usuarios/store',$this->getValidData([
+            'role' => 'invalid-lod'
+        ]))->assertSessionHasErrors('role');
+
+        $this->assertDatabaseEmpty('users');
+
     }
     /** @test */
     function the_profession_id_field_is_optional()
@@ -450,7 +479,8 @@ class UsersModuleTest extends TestCase
             'password' => '123456',
             'profession_id' => $this->profession->id,
             'bio' => 'Biografia',
-            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre'
+            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre',
+            'role' => 'user'
         ],$custom);
     }
 
