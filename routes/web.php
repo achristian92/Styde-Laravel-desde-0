@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect(route('users.index'));
+    return view('welcome');
 });
 
 Route::get('/usuarios','UserController@index')->name('users.index');
