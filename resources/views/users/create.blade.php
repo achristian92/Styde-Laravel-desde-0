@@ -3,7 +3,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Crear nuevo Usuario</h4>
+            <h4>Crear  Usuario</h4>
         </div>
         <div class="card-body">
             @if($errors->any())
@@ -81,7 +81,7 @@
 
 
                 <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                    <button type="submit" class="btn btn-primary">Crear usuario</button>
                     <a href="{{route('users.index')}}" class="btn btn-link">Regresar</a>
                 </div>
 

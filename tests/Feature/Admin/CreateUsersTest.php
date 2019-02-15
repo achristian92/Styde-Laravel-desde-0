@@ -33,7 +33,7 @@ class CreateUsersTest extends TestCase
 
         $this->get('/usuarios/nuevo')
             ->assertStatus(200)
-            ->assertSee('Crear nuevo Usuario')
+            ->assertSee('Crear Usuario')
             ->assertViewHas('professions',function($professions) use ($profession){
                 return $professions->contains($profession);
             })

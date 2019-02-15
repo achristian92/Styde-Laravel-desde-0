@@ -1,0 +1,1 @@
+C:30:"PHPUnit\Runner\TestResultCache":245:{a:2:{s:7:"defects";a:1:{s:57:"Tests\Browser\Admin\CreateUserTest::a_user_can_be_created";i:3;}s:5:"times";a:2:{s:57:"Tests\Browser\Admin\CreateUserTest::a_user_can_be_created";d:2.943;s:43:"Tests\Browser\ExampleTest::testBasicExample";d:0.895;}}}
