@@ -16,7 +16,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        View::composer(['users.create','users.edit'],UserFieldsComposer::class);
         Blade::directive('render', function ($expression){
             $parts = explode(',',$expression,2);
             $component = $parts[0];
