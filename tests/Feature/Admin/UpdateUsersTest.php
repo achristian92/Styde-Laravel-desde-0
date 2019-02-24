@@ -232,7 +232,22 @@ class UpdateUsersTest extends TestCase
             'email' => 'alan@gmail.com',
         ]);
     }
+    /** @test */
+    function the_role_is_required()
+    {
+       $this->handleValidationExceptions();
+       $user = factory(User::class)->create();
 
+       $this->from("usuarios/{$user->id}/editar")
+           ->put("usuarios/{$user->id}",$this->withData([
+               'role' => '',
+           ]))
+           ->assertRedirect("usuarios/{$user->id}/editar")
+           ->assertSessionHasErrors(['role']);
+
+       $this->assertDatabaseMissing('users',['email' => 'prueba@gmail.com']);
+
+    }
 
 
 
