@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Profession;
 use App\Skill;
 use App\User;
+use App\UserProfile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -56,19 +57,70 @@ class UpdateUsersTest extends TestCase
     {
         $this->handleValidationExceptions();
 
+        $oldProfession = factory(Profession::class)->create();
         $user = factory(User::class)->create();
+        $user->profile()->save(factory(UserProfile::class)->make([
+            'profession_id' => $oldProfession->id
+        ]));
+        $oldSkillA = factory(Skill::class)->create();
+        $oldSkillB = factory(Skill::class)->create();
+
+        $user->skills()->attach([$oldSkillA->id,$oldSkillB->id]);
+
+        $newProfession = factory(Profession::class)->create();
+        $newSkillA = factory(Skill::class)->create();
+        $newSkillB = factory(Skill::class)->create();
 
         $this->put(route('users.update',$user->id),[
             'name' => 'Dulio',
             'email' => 'dulio@styde.net',
-            'password' => '123456'
+            'password' => '123456',
+            'bio' => 'Biografia',
+            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre',
+            'role' => 'admin',
+            'profession_id' => $newProfession->id,
+            'skills' => [$newSkillA->id,$newSkillB->id],
         ])->assertRedirect(route('users.show',$user->id));
 
         $this->assertCredentials([
             'name' => 'Dulio',
             'email' => 'dulio@styde.net',
-            'password' => '123456'
+            'password' => '123456',
+            'role' => 'admin'
         ]);
+        $this->assertDatabaseHas('user_profiles',[
+            'user_id' => $user->id,
+            'bio' => 'Biografia',
+            'twitter' => 'https://www.facebook.com/alancristian.ruizaguirre',
+            'profession_id' => $newProfession->id,
+        ]);
+        $this->assertDatabaseCount('user_skill',2);
+        $this->assertDatabaseHas('user_skill',[
+           'user_id' => $user->id,
+           'skill_id' => $newSkillA->id,
+        ]);
+        $this->assertDatabaseHas('user_skill',[
+           'user_id' => $user->id,
+           'skill_id' => $newSkillB->id,
+        ]);
+    }
+    /** @test */
+    function it_detaches_all_the_skills_if_none_is_checked()
+    {
+
+        $user = factory(User::class)->create();
+
+        $oldSkillA = factory(Skill::class)->create();
+        $oldSkillB = factory(Skill::class)->create();
+
+        $user->skills()->attach([$oldSkillA->id,$oldSkillB->id]);
+
+
+        $this->put(route('users.update',$user->id), $this->withData())
+            ->assertRedirect(route('users.show',$user->id));
+
+        $this->assertDatabaseEmpty('user_skill');
+
     }
     //TEST PARA CAMPOS OBLIGATORIOS CUANDO ACTUALICEMOS EL USUARIO
 
@@ -147,11 +199,11 @@ class UpdateUsersTest extends TestCase
         ]);
 
         $this->from("usuarios/{$user->id}/edit")
-            ->put("/usuarios/{$user->id}",[
+            ->put("/usuarios/{$user->id}", $this->withData([
                 'name' => 'Alancin',
                 'email' => 'pruebin@gmail.com',
                 'password' => '',
-            ])->assertRedirect(route('users.show',$user->id));
+            ]))->assertRedirect(route('users.show',$user->id));
 
         $this->assertCredentials([
             'name' => 'Alancin',
@@ -169,11 +221,11 @@ class UpdateUsersTest extends TestCase
         ]);
 
         $this->from("usuarios/{$user->id}/edit")
-            ->put("/usuarios/{$user->id}",[
+            ->put("/usuarios/{$user->id}",$this->withData([
                 'name' => 'Alancin',
                 'email' => 'alan@gmail.com',
                 'password' => '1235678',
-            ])->assertRedirect(route('users.show',$user->id));
+            ]))->assertRedirect(route('users.show',$user->id));
 
         $this->assertDatabaseHas('users',[
             'name' => 'Alancin',

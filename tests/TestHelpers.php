@@ -19,6 +19,14 @@ trait TestHelpers
             "Failed asserting the tabla [%s] is empty. %s %s found." ,$table,$total,str_plural('row',$total)
         ));
     }
+    protected function assertDatabaseCount($table,$expected,$connection = null)
+    {
+        $found = $this->getConnection($connection)->table($table)->count();
+        $this->assertSame($expected,$found,sprintf(
+            "Failed asserting the tabla [%s] has . %s %s %s %s found." ,
+            $table,$expected,str_plural('row',$expected),$found,str_plural('row',$found)
+        ));
+    }
     public function withData(array $custom = [])
     {
 

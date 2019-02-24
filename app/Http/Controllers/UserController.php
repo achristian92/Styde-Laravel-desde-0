@@ -50,14 +50,26 @@ class UserController extends Controller
         $data = request()->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
-            'password' => ''
+            'password' => '',
+            'role' => '',
+            'bio' => '',
+            'twitter' => '',
+            'profession_id' => '',
+            'skills' => ''
         ]);
         if($data['password'] != null){
             $data['password'] = bcrypt($data['password']);
         }else{
             unset($data['password']);
         }
-        $user->update($data);
+        $user->fill($data);
+        $user->role = $data['role'];
+        $user->save();
+
+        $user->profile->update($data);
+
+        $user->skills()->sync($data['skills'] ?? []);
+
         return redirect()->route('users.show',compact('user'));
     }
 
