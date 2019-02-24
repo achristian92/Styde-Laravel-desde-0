@@ -11,7 +11,7 @@
 
             <form action="{{route('users.update',$user->id)}}" method="post">
                 {{ method_field('PUT') }}
-                @render('UserFields', ['user' => $user])
+                @include('users._fields')
                 <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
                     <a href="{{route('users.index')}}" class="btn btn-link">Regresar</a>
