@@ -8,8 +8,8 @@ class Profession extends Model
 {
     protected $fillable = ['title'];
 
-    public function users()
+    public function profiles()
     {
-        return $this->hasMany(User::class); // una profession tiene muchos usuarios
+        return $this->hasMany(UserProfile::class); // una profession tiene muchos usuarios
     }
 }

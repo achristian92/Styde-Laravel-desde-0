@@ -19,7 +19,7 @@ class CreateUserSkillTable extends Migration
             $table->unsignedInteger('skill_id');
 
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('skill_id')->references('id')->on('skills');
 
             $table->timestamps();

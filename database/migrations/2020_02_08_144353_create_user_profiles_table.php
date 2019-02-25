@@ -21,7 +21,7 @@ class CreateUserProfilesTable extends Migration
             $table->string('twitter')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('profession_id')->references('id')->on('professions');
 
 
