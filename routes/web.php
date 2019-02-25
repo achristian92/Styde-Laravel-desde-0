@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::get('/usuarios','UserController@index')->name('users.index');
 
+Route::get('/usuarios/papelera','UserController@trashed')->name('users.trashed');
+
 Route::get('/usuarios/{user}','UserController@show')->where('user','[0-9]+')->name('users.show');
 
 Route::get('/usuarios/nuevo','UserController@create')->name('users.create');
@@ -29,7 +31,9 @@ Route::put('/usuarios/{user}','UserController@update')->name('users.update');
 
 Route::get('/saludo/{usuario}/{nickname?}','WelcomeUserController');
 
-Route::delete('usuario/{user}/delete','UserController@destroy')->name('users.destroy');
+Route::patch('/usuarios/{user}/papelera','UserController@trash')->name('users.patch');
+
+Route::delete('usuario/{id}/delete','UserController@destroy')->name('users.destroy');
 
 // Profile
 Route::get('/editar-perfil/', 'ProfileController@edit');

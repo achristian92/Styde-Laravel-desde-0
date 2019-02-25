@@ -20,6 +20,7 @@ class CreateUserProfilesTable extends Migration
             $table->string('bio');
             $table->string('twitter')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->foreign('profession_id')->references('id')->on('professions');
