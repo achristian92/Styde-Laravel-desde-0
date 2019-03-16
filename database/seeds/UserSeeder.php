@@ -14,9 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-//        $profe = DB::select('select id from professions where title = ?',['Backend']);
-//        dd($profe[0]->id);
-//        $profe = DB::table('professions')->select('id')->first();
+
         $profeId = Profession::whereTitle('Backend')->value('id');
 
 
@@ -33,10 +31,10 @@ class UserSeeder extends Seeder
             'profession_id' => $profeId
         ]);
 
-        factory(User::class,5)->create()->each(function ($user){
-            $user->profile()->create(
-              factory(\App\UserProfile::class)->raw()
-            );
+        factory(User::class,100)->create()->each(function ($user){
+           factory(\App\UserProfile::class)->create([
+               'user_id' => $user->id,
+           ]);
         });
 
 
