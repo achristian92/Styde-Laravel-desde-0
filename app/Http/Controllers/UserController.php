@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function trashed()
     {
-        $users = User::onlyTrashed()->get();
+        $users = User::onlyTrashed()->paginate(15);
 
         $title = 'Listado de usuarios en papelera';
 

@@ -17,7 +17,7 @@ class CreateUserProfilesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('profession_id')->nullable();
-            $table->string('bio');
+            $table->string('bio',1000);
             $table->string('twitter')->nullable();
             $table->timestamps();
             $table->softDeletes();

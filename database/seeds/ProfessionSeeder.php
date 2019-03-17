@@ -13,14 +13,6 @@ class ProfessionSeeder extends Seeder
      */
     public function run()
     {
-//        DB::insert('INSERT INTO professions (title) values (:TITLE)' ,[
-//           'title' => 'Dessarrollo backend',
-//        ]);//consulta manual de sql
-
-
-//        DB::table('professions')->insert([
-//           'title' => 'Backend',
-//        ]);
 
         Profession::create([
             'title' => 'Backend',
@@ -31,7 +23,6 @@ class ProfessionSeeder extends Seeder
         Profession::create([
             'title' => 'Diseñdor web',
                 ]);
-        factory(Profession::class,2)->create();
 
     }
 }

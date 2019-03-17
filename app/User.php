@@ -23,11 +23,6 @@ class User extends Authenticatable
     ];
 
 
-    public function profile()
-    {
-        return $this->hasOne(UserProfile::class)->withDefault();
-    }
-
     public static function findByEmail($email)
     {
         return static::where(compact('email'))->first();
@@ -38,10 +33,11 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function profession() //columna profession_id si no le pasamos segundo parametros
+    public function profile()
     {
-        return $this->belongsTo(Profession::class); //un usuario perteneze a una profession
+        return $this->hasOne(UserProfile::class)->withDefault();
     }
+
 
     public function skills()
     {

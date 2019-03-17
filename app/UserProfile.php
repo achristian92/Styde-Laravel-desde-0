@@ -13,4 +13,10 @@ class UserProfile extends Model
 
     protected $guarded = [];
 
+    public function profession()
+    {
+        return $this->belongsTo(Profession::class)->withDefault([
+            'title' => '(Sin Profesion)'
+        ]);
+    }
 }

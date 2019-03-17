@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,14 +16,16 @@ class DatabaseSeeder extends Seeder
 
         $this->TruncateTable([
             'users',
+            'user_profiles',
+            'user_skill',
             'professions',
             'skills'
         ]);
 
 
         $this->call(ProfessionSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(SkillSeeder::class);
+        $this->call(UserSeeder::class);
     }
 
     public function TruncateTable(array $tables)
