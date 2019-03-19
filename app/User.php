@@ -32,7 +32,16 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+    /** Buscadores */
+    public function scopeNameorEmail($query,$name)
+    {
+        if($name != null){
+            return $query->where('name','like',"%{$name}%")
+                         ->orWhere('email','like',"%{$name}%");
+        }
+    }
 
+    /** Relaciones */
     public function profile()
     {
         return $this->hasOne(UserProfile::class)->withDefault();

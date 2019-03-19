@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Forms\UserForm;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Profession;
-use App\Skill;
-use App\User;
-use App\UserProfile;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\{Profession,Skill,User};
+
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at','Desc')->paginate(15);
+        $users = User::nameoremail(request('search'))->orderBy('created_at','Desc')->paginate(15);
 
         $title = 'Listado de Usuarios';
 
