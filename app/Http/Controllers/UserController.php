@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Forms\UserForm;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\{Profession,Skill,User};
+use App\{Profession, Skill, Team, User};
 
 
 class UserController extends Controller
@@ -16,7 +16,7 @@ class UserController extends Controller
 
         $title = 'Listado de Usuarios';
 
-        return view('users.index',compact('users','title')); //compact convierte en un array asosiativo
+        return view('users.index',compact('users','title'));
     }
 
     public function trashed()

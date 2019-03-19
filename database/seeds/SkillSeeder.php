@@ -15,21 +15,13 @@ class SkillSeeder extends Seeder
     public function run()
     {
 
-        Skill::create([
-            'name' => 'HTML',
-        ]);
-        Skill::create([
-            'name' => 'LARAVEL',
-        ]);
-        Skill::create([
-            'name' => 'POO',
-        ]);
-        Skill::create([
-            'name' => 'VUE.JS',
-        ]);
-        Skill::create([
-            'name' => 'JQUERY',
-        ]);
+        factory(Skill::class)->create(['name' => 'HTML']);
+        factory(Skill::class)->create(['name' => 'CSS']);
+        factory(Skill::class)->create(['name' => 'JS']);
+        factory(Skill::class)->create(['name' => 'PHP']);
+        factory(Skill::class)->create(['name' => 'SQL']);
+        factory(Skill::class)->create(['name' => 'OOP']);
+        factory(Skill::class)->create(['name' => 'TDD']);
 
     }
 }
